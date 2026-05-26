@@ -1,0 +1,44 @@
+# deps
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# next
+.next/
+out/
+build/
+dist/
+
+# env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# editor
+.vscode/
+.idea/
+.DS_Store
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# supabase
+.supabase/
+supabase/.branches/
+supabase/.temp/
+
+# tests / coverage
+coverage/
+playwright-report/
+test-results/
