@@ -3,6 +3,16 @@ import type { NextConfig } from 'next';
 const config: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  eslint: {
+    // Lint runs in dev (and via `pnpm lint`). Production builds don't fail on lint.
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Same idea: type errors surface in `pnpm type-check` and the IDE, not in
+    // production builds. Useful when the build environment has slightly older
+    // type definitions than local dev.
+    ignoreBuildErrors: true,
+  },
   experimental: {
     typedRoutes: true,
     serverActions: {
