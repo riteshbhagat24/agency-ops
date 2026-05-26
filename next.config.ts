@@ -13,8 +13,8 @@ const config: NextConfig = {
     // type definitions than local dev.
     ignoreBuildErrors: true,
   },
+  typedRoutes: true,
   experimental: {
-    typedRoutes: true,
     serverActions: {
       bodySizeLimit: '4mb',
     },
