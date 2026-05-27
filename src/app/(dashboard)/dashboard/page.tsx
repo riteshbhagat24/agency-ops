@@ -25,6 +25,7 @@ import {
   getTeamUtilization,
   pctDelta,
 } from '@/features/dashboard/queries';
+import { DateRangeFilter } from '@/components/data/date-range-filter';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,7 +41,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">
             Good {greeting()}, {user.full_name.split(' ')[0]}
@@ -49,9 +50,12 @@ export default async function DashboardPage() {
             Here's where the agency stands this month.
           </p>
         </div>
-        <Button asChild>
-          <Link href={'/tickets/new' as never}>New ticket</Link>
-        </Button>
+        <div className="flex items-center gap-3">
+          <DateRangeFilter basePath="/dashboard" />
+          <Button asChild>
+            <Link href={'/tickets/new' as never}>New ticket</Link>
+          </Button>
+        </div>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
