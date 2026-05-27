@@ -30,7 +30,7 @@ update departments d set lead_user_id = u.id
      or (d.name = 'Operations'    and u.email = 'ritesh@futureadymedia.com')
      or (d.name = 'Creative'      and u.email = 'karen@futureadymedia.com')
      or (d.name = 'Tech'          and u.email = 'roshan@futureadymedia.com')
-     or (d.name = 'Accounts'      and u.email = 'shweta.dhuri@futureadymedia.com')
+     or (d.name = 'Accounts'      and u.email = 'accounts@futureadymedia.com')
      or (d.name = 'Management'    and u.email = 'amey@futureadymedia.com')
    );
 

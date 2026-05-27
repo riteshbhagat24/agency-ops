@@ -140,7 +140,7 @@ select _seed_person('shabib@orangevideos.in',     'Shabib Mokles',        'clien
 select _seed_person('karen@futureadymedia.com',   'Karen Sequeira', 'design_team', '11111111-0000-0000-0000-000000000003', 'Creative Head');
 
 -- Accounts
-select _seed_person('shweta.dhuri@futureadymedia.com', 'Shweta Dhuri', 'accounts', '11111111-0000-0000-0000-000000000005', 'Sr. Accounts Executive');
+select _seed_person('accounts@futureadymedia.com', 'Shweta Dhuri', 'super_admin', '11111111-0000-0000-0000-000000000005', 'Sr. Accounts Executive');
 
 drop function _seed_person(text, text, user_role, uuid, text);
 
