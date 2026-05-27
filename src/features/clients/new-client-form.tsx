@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
+  CLIENT_TYPE_OPTIONS,
   COUNTRIES,
   INVOICE_TIMING_OPTIONS,
   createClientSchema,
@@ -45,6 +46,7 @@ export function NewClientForm({ users }: { users: UserPick[] }) {
     resolver: zodResolver(createClientSchema),
     defaultValues: {
       brand_code: 'FRM',
+      client_type: 'retainer',
       billing_cycle: 'monthly',
       allowed_revisions: 2,
       status: 'active',
@@ -55,21 +57,16 @@ export function NewClientForm({ users }: { users: UserPick[] }) {
     },
   });
 
-  // When country changes, auto-fill currency + tax_rate to that country's defaults.
   function onCountryChange(code: string) {
     const country = COUNTRIES.find((c) => c.code === code);
     if (!country) return;
     setValue('country', country.code, { shouldValidate: true });
     setValue('currency', country.currency, { shouldValidate: true });
-    setValue('tax_rate', country.defaultTax, { shouldValidate: true });
+    // GST only applies to India — set tax to 0 for all others
+    setValue('tax_rate', country.code === 'IN' ? 18 : 0, { shouldValidate: true });
   }
 
-  const currentTaxLabel = (() => {
-    const c = watch('country');
-    if (c === 'IN') return 'GST';
-    if (c === 'US') return 'Sales Tax';
-    return 'VAT';
-  })();
+  const isIndiaClient = watch('country') === 'IN';
 
   function addScope() {
     const v = scopeInput.trim();
@@ -112,7 +109,7 @@ export function NewClientForm({ users }: { users: UserPick[] }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Brand">
           <Select
             defaultValue="FRM"
@@ -126,6 +123,26 @@ export function NewClientForm({ users }: { users: UserPick[] }) {
             <SelectContent>
               <SelectItem value="FRM">FRM — Futuready Media</SelectItem>
               <SelectItem value="OV">OV — Orange Videos</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field label="Client type">
+          <Select
+            defaultValue="retainer"
+            onValueChange={(v) =>
+              setValue('client_type', v as 'project' | 'retainer', { shouldValidate: true })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CLIENT_TYPE_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                  <span className="ml-1 text-xs text-muted-foreground">· {opt.hint}</span>
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </Field>
@@ -163,8 +180,15 @@ export function NewClientForm({ users }: { users: UserPick[] }) {
         <Field label="Currency">
           <Input readOnly {...register('currency')} />
         </Field>
-        <Field label={`${currentTaxLabel} %`}>
-          <Input type="number" min={0} max={50} step={0.5} {...register('tax_rate')} />
+        <Field label="GST %" hint={isIndiaClient ? undefined : 'Only applicable for India'}>
+          <Input
+            type="number"
+            min={0}
+            max={50}
+            step={0.5}
+            disabled={!isIndiaClient}
+            {...register('tax_rate')}
+          />
         </Field>
         <Field label="Payment terms (days)">
           <Input type="number" min={0} max={180} {...register('payment_terms_days')} />
@@ -293,9 +317,12 @@ export function NewClientForm({ users }: { users: UserPick[] }) {
         )}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Start date">
           <Input type="date" {...register('start_date')} />
+        </Field>
+        <Field label="End date" hint="Agreement / contract end date">
+          <Input type="date" {...register('end_date')} />
         </Field>
         <Field label="Status">
           <Select

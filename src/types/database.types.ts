@@ -72,12 +72,15 @@ export interface Department {
   created_at: string;
 }
 
+export type ClientType = 'project' | 'retainer';
+
 export interface Client {
   id: string;
   client_code: string;
   client_name: string;
   brand_name: string;
   brand_code: 'FRM' | 'OV' | 'FM';
+  client_type: ClientType;
   retainer_amount: number;
   billing_cycle: string;
   scope_included: string[];

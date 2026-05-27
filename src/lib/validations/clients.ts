@@ -3,10 +3,15 @@ import { z } from 'zod';
 export const COUNTRIES = [
   { code: 'IN', name: 'India',          currency: 'INR', defaultTax: 18 },
   { code: 'US', name: 'United States',  currency: 'USD', defaultTax: 0 },
-  { code: 'AE', name: 'UAE',            currency: 'AED', defaultTax: 5 },
-  { code: 'GB', name: 'United Kingdom', currency: 'GBP', defaultTax: 20 },
-  { code: 'SG', name: 'Singapore',      currency: 'SGD', defaultTax: 9 },
-  { code: 'AU', name: 'Australia',      currency: 'AUD', defaultTax: 10 },
+  { code: 'AE', name: 'UAE',            currency: 'AED', defaultTax: 0 },
+  { code: 'GB', name: 'United Kingdom', currency: 'GBP', defaultTax: 0 },
+  { code: 'SG', name: 'Singapore',      currency: 'SGD', defaultTax: 0 },
+  { code: 'AU', name: 'Australia',      currency: 'AUD', defaultTax: 0 },
+] as const;
+
+export const CLIENT_TYPE_OPTIONS = [
+  { value: 'retainer', label: 'Retainer', hint: 'Monthly/quarterly retainer with ongoing scope' },
+  { value: 'project',  label: 'Project',  hint: 'One-time project with fixed deliverables' },
 ] as const;
 
 export const createClientSchema = z.object({
@@ -21,6 +26,7 @@ export const createClientSchema = z.object({
   client_name: z.string().min(2).max(160),
   brand_code: z.enum(['FRM', 'OV']),
   brand_name: z.string().min(2).max(120).optional(),
+  client_type: z.enum(['project', 'retainer']).default('retainer'),
   retainer_amount: z.coerce.number().min(0),
   billing_cycle: z.enum(['monthly', 'quarterly', 'annual']).default('monthly'),
   scope_included: z.array(z.string()).default([]),
@@ -28,6 +34,7 @@ export const createClientSchema = z.object({
   account_manager_id: z.string().uuid().optional().nullable(),
   status: z.enum(['active', 'paused', 'churned', 'prospect']).default('active'),
   start_date: z.string().optional().nullable(),
+  end_date: z.string().optional().nullable(),
   notes: z.string().max(2000).optional(),
 
   // Production fields

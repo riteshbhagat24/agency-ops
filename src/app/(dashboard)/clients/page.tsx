@@ -99,6 +99,7 @@ export default async function ClientsPage({
                     <th className="px-4 py-2.5">Client</th>
                     <th className="px-4 py-2.5">Brand</th>
                     <th className="px-4 py-2.5">Retainer</th>
+                    <th className="px-4 py-2.5">Type</th>
                     <th className="px-4 py-2.5">Country</th>
                     <th className="px-4 py-2.5">Profitability</th>
                     <th className="px-4 py-2.5">AM</th>
@@ -128,11 +129,16 @@ export default async function ClientsPage({
                         {formatMoney(c.retainer_amount, c.currency ?? 'INR', { compact: true })}
                         <div className="text-[10px] text-muted-foreground">{c.billing_cycle}</div>
                       </td>
+                      <td className="px-4 py-3 text-xs capitalize">
+                        {c.client_type ?? 'retainer'}
+                      </td>
                       <td className="px-4 py-3 text-xs">
                         {c.country}
-                        <div className="text-[10px] text-muted-foreground">
-                          {c.tax_rate}% {c.country === 'IN' ? 'GST' : 'tax'}
-                        </div>
+                        {c.country === 'IN' && c.tax_rate > 0 && (
+                          <div className="text-[10px] text-muted-foreground">
+                            {c.tax_rate}% GST
+                          </div>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <ProfitabilityChip value={c.profitability_status} />

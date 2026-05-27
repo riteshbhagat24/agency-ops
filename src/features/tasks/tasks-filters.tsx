@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { DateRangeFilter } from '@/components/data/date-range-filter';
 import {
   Select,
   SelectContent,
@@ -119,6 +120,7 @@ export function TasksFilters({ initial, clients, users }: TasksFiltersProps) {
           <X className="h-3.5 w-3.5" /> Clear
         </Button>
       )}
+      <DateRangeFilter basePath="/tasks" />
     </div>
   );
 }

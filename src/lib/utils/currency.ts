@@ -23,20 +23,10 @@ export function formatMoney(
 }
 
 /**
- * Tax label varies by country. India = GST. UAE = VAT. UK = VAT. US = Sales Tax.
+ * Always "GST" — the agency uses the GST label universally.
+ * GST is only applicable for India clients; for non-India clients the
+ * tax_rate is 0 and the field is disabled in the UI.
  */
-export function taxLabel(country: string): string {
-  switch (country) {
-    case 'IN':
-      return 'GST';
-    case 'AE':
-    case 'GB':
-    case 'SG':
-    case 'AU':
-      return 'VAT';
-    case 'US':
-      return 'Sales Tax';
-    default:
-      return 'Tax';
-  }
+export function taxLabel(_country: string): string {
+  return 'GST';
 }

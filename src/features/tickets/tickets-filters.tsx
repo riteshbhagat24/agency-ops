@@ -5,6 +5,7 @@ import { useCallback, useTransition } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { DateRangeFilter } from '@/components/data/date-range-filter';
 import {
   Select,
   SelectContent,
@@ -198,17 +199,20 @@ export function TicketsFilters({ initial, clients = [], users = [] }: TicketsFil
         {isPending && <span className="text-xs text-muted-foreground">Updating…</span>}
       </div>
 
-      <div className="flex flex-wrap gap-1.5">
-        {QUICK_FILTERS.map((qf) => (
-          <button
-            key={qf.key}
-            type="button"
-            onClick={() => updateParam(qf.q)}
-            className="rounded-full border bg-card px-2.5 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            {qf.label}
-          </button>
-        ))}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap gap-1.5">
+          {QUICK_FILTERS.map((qf) => (
+            <button
+              key={qf.key}
+              type="button"
+              onClick={() => updateParam(qf.q)}
+              className="rounded-full border bg-card px-2.5 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              {qf.label}
+            </button>
+          ))}
+        </div>
+        <DateRangeFilter basePath="/tickets" />
       </div>
     </div>
   );
